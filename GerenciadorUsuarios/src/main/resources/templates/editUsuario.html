@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html layout:decorate="~{modelo}">
+<head>
+	<title>Usuarios</title>
+	<meta charset="UTF-8" />
+		
+</head>
+<body>
+	<main layout:fragment="conteudo">
+		<div class="container">
+			<h3>Usuário - Edição</h3>
+				<form method="POST" th:object="${usuario}">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="id">Id:</label>
+   							<input type="text" class="form-control" id="id" name="id" value="" th:field="*{id}" readonly>
+																										
+   							<label for="papel">Username:</label>
+   							<input type="text" class="form-control" id="username" placeholder="Digite username." name="username" value="" th:field="*{username}">
+    					    					   					
+   							<label for="papel">Nome Completo:</label>
+   							<input type="text" class="form-control" id="nomeCompleto" placeholder="Digite nome." name="nomeCompleto" value="" th:field="*{nomeCompleto}">
+    					    					
+   							<label for="papel">Senha:</label>
+   							<input type="text" class="form-control" id="senha" placeholder="Digite senha." name="senha" value="" th:field="*{senha}">
+    						<br>
+    					    <div class="form-group col-md-6">	
+    						<h6>Status:</h6>
+    						
+    							<div class="form-check-inline">
+    								<input class="form-check-input" type="radio" name="status" id="status" value="1" th:field="*{status}">
+  									<label class="form-check-label" for="exampleRadios1">Ativo</label>
+   								</div>
+   							
+   								<div class="form-check-inline">	
+   									<input class="form-check-input" type="radio" name="status" id="status" value="0" >
+  									<label class="form-check-label" for="exampleRadios1">Desativado</label>
+	   							</div>
+	   							<br>	   						
+	   							<br>
+	   							<h6>Papéis:</h6>
+	   								<div class="form-check-inline" th:object="${papeis}" th:each="papel : ${papeis}">
+  										<input class="form-check-input" type="checkbox" value="" id="papeis" name="papeis" >
+  										<label class="form-check-label" for="papel" th:text=${papel.papel}></label>
+									</div>
+	   						</div>
+	   					</div>		
+  					</div>
+  					<br>
+  					<button type="submit" class="btn btn-primary">Salvar</button>
+  					<a type="button" class="btn btn-danger" href="/usuarios">Cancelar</a>
+  				</form>
+		</div>
+	</main>
+</body>
+</html>

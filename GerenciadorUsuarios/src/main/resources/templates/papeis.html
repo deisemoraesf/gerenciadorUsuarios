@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html layout:decorate="~{modelo}">
+<head>
+	<title>Papeis</title>
+	<meta charset="UTF-8" />
+	<script th:inline="javascript">
+    	$(function() {
+        	$('#excluir').on('show.bs.modal', function (event) {
+            	var button = $(event.relatedTarget)
+            	var idUsuario = button.data('id')
+				var actionUrl = button.data('actionurl');
+            	var modal = $(this);
+            	modal.find('.modal-title').text('Apagar Papel');
+            	modal.find('.modal-body p').text('Deseja apagar o Papel de '+ idUsuario+'?');
+            	modal.find('.modal-footer form').attr('action', actionUrl);
+        	});
+    	});
+	</script>
+	
+</head>
+<body>
+<main layout:fragment="conteudo">
+	<div class="container">
+		<h3>Papéis dos Usuários</h3>
+			<div class="col-12 alert alert-danger" th:if="${mensagemErro != null}" th:text="${mensagemErro}" role="alert"></div>
+			<div class="col-12 alert alert-success" th:if="${mensagemSucesso != null}" th:text="${mensagemSucesso}" role="alert"></div>
+			<form method="POST">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+   						<label for="papel">Papel:</label>
+   						<input type="text" class="form-control" id="papel" placeholder="Digite nome do papel." name="papel" value="">
+    				</div>
+  				</div>
+  				<br>
+  				<button type="submit" class="btn btn-primary">Salvar</button>
+  			</form>
+  			<br>
+			<div class="table-responsive">
+				<table class="table table-striped ">
+					<tr>
+						<th>Id</th>
+						<th></th>
+						<th>Papel</th>
+						<th></th>
+						<th>Ação</th>
+					</tr>
+					<tr th:each="papel : ${papeis}">
+						<td th:text="${papel.id}"><td>
+						<td th:text="${papel.papel}"><td>
+						<td><a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#excluir"
+							th:attr="data-id=${papel.papel}, data-actionurl=@{/papeis/remover/{id}(id=${papel.id})}">Excluir
+							</a>
+						</td>
+					</tr>
+				</table> 	
+			</div>
+			<a type="button" class="btn btn-light" href="/index">Voltar</a>
+	</div>
+	<div layout:fragment="modal-area">
+	    <div class="modal fade" tabindex="-1" role="dialog" id="excluir">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title">Apagar Papel</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">
+	                    <p></p>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>
+	                    <form method="GET">
+	                       <button type="submit" class="btn btn-danger">Apagar</button>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	        
+	    </div>
+	</div> 
+	
+</main>
+</body>
+</html>
