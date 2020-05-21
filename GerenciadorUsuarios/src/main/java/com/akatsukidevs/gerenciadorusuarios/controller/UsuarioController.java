@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,13 +58,28 @@ public class UsuarioController {
 		List<Papeis> p = pr.findAll();
 		Usuario usu = u.get();
 		mv.addObject("usuario", usu);
+		mv.addObject("papeisatribuidos", usu.getPapel());
 		mv.addObject("papeis", p);
+		
 		return mv;
 		
 	}
-	
+	@Transactional
 	@PostMapping(value="/usuarios/editar/{id}")
-	public String salvaEdicao(@Valid Usuario u, RedirectAttributes attribute) {
+	public String salvaEdicao(@Valid Usuario u,@RequestParam("papeis") List<String> papel, RedirectAttributes attribute) {
+		Set <Papeis> precebido = new HashSet<>();
+		Set <Usuario> urecebido = new HashSet<>();
+		u.setCadastro(LocalDate.now());
+		for (String s : papel) {
+			Iterable <Papeis> pp = pr.findByPapel(s);
+			for(Papeis papeis : pp) {
+				precebido.add(papeis);
+				u.setPapel(precebido);
+				ur.save(u);
+				urecebido.add(u);
+				papeis.setUsuario(urecebido);
+			}
+		}	
 		ur.save(u);
 		attribute.addFlashAttribute("mensagemSucesso", "Editado com Sucesso");
 		return ("redirect:/usuarios");
@@ -76,19 +93,30 @@ public class UsuarioController {
 		return mv;
 	}
 	
+	@Transactional
 	@PostMapping(value="/usuarios/cadastrar")
-	public String salvar(@Valid Usuario usuario, Papeis papeis, BindingResult result, RedirectAttributes attribute) {
+	public String salvar(@Valid Usuario usuario,@RequestParam("papeis") List<String> papel, BindingResult result, RedirectAttributes attribute) {
 		
 		if(result.hasErrors()) {
 			attribute.addFlashAttribute("mensagemErro", "Verifique os campos em branco"); 
 		}
+		Set <Papeis> precebido = new HashSet<>();
+		Set <Usuario> urecebido = new HashSet<>();
 		usuario.setCadastro(LocalDate.now());
+		for (String s : papel) {
+			Iterable <Papeis> pp = pr.findByPapel(s);
+			for(Papeis papeis : pp) {
+				precebido.add(papeis);
+				usuario.setPapel(precebido);
+				ur.save(usuario);
+				urecebido.add(usuario);
+				papeis.setUsuario(urecebido);
+			}
+						
+		}
+		
 		ur.save(usuario);
-		Set<Papeis> p = new HashSet<>();
-		p.add(papeis);
-		papeis.setUsuario(usuario);
-		usuario.setPapel(p);
-				
+		
 		attribute.addFlashAttribute("mensagemSucesso", "Salvo com sucesso");
 		return ("redirect:/usuarios");
 	}

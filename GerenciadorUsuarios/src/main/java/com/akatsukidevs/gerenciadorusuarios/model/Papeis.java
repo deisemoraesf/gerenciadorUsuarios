@@ -1,6 +1,8 @@
 package com.akatsukidevs.gerenciadorusuarios.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
 
@@ -25,10 +27,12 @@ public class Papeis implements Serializable {
 	@NotBlank
 	private String papel;
 	
-	@ManyToOne
-	@JoinTable(name = "tb_pessoa_papeis", joinColumns = @JoinColumn(name="id_usuario"),
-	   inverseJoinColumns = @JoinColumn(name="id_papel"))
-	private Usuario usuario;
+	
+	
+	@ManyToMany
+	@JoinTable(name = "tb_usuario_papeis", joinColumns = @JoinColumn(name="id_papel"),
+	   inverseJoinColumns = @JoinColumn(name="id_usuario"))
+	private Set<Usuario> usuario = new HashSet<>();
 	
 	
 
@@ -42,6 +46,10 @@ public class Papeis implements Serializable {
 	}
 
 
+
+	public Papeis(String source) {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;
@@ -59,13 +67,15 @@ public class Papeis implements Serializable {
 		this.papel = papel;
 	}
 
-	public Usuario getUsuario() {
+	public Set<Usuario> getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Set<Usuario> usuario) {
 		this.usuario = usuario;
 	}
+
+	
 	
 		
 

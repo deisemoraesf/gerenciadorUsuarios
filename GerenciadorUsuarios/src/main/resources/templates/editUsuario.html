@@ -33,15 +33,21 @@
    								</div>
    							
    								<div class="form-check-inline">	
-   									<input class="form-check-input" type="radio" name="status" id="status" value="0" >
+   									<input class="form-check-input" type="radio" name="status" id="status" value="0" th:field="*{status}" >
   									<label class="form-check-label" for="exampleRadios1">Desativado</label>
 	   							</div>
 	   							<br>	   						
 	   							<br>
+	   							<h6>Papéis Atribuídos:</h6>
+	   								<div class="form-check-inline" th:each="papel : ${papeisatribuidos}">
+  										<label class="form-check-label" for="papel" th:text="${papel.papel}"></label>
+									</div>
+	   							<br>
+	   							<br>
 	   							<h6>Papéis:</h6>
 	   								<div class="form-check-inline" th:object="${papeis}" th:each="papel : ${papeis}">
-  										<input class="form-check-input" type="checkbox" value="" id="papeis" name="papeis" >
-  										<label class="form-check-label" for="papel" th:text=${papel.papel}></label>
+  										<input class="form-check-input" type="checkbox" th:value="${papel.papel}" id="papeis" name="papeis">
+  										<label class="form-check-label" for="papel" th:text="${papel.papel}"></label>
 									</div>
 	   						</div>
 	   					</div>		

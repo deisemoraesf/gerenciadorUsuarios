@@ -2,6 +2,7 @@ package com.akatsukidevs.gerenciadorusuarios.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,9 +41,9 @@ public class Usuario implements Serializable{
 	@Column
 	private boolean status;
 	
-	@NotEmpty
-	@OneToMany(mappedBy="usuario")
-	private Set<Papeis> papel;
+	
+	@ManyToMany(mappedBy="usuario")
+	private Set<Papeis> papel = new HashSet<>();
 	
 	@Column
 	@DateTimeFormat(iso = ISO.DATE) // ISO-8601
@@ -51,16 +52,15 @@ public class Usuario implements Serializable{
 	public Usuario() {
 		
 	}
-
 	
 	public Usuario(Long id, @NotEmpty String username, @NotEmpty String nomeCompleto, @NotEmpty String senha,
-			@NotEmpty boolean status, @NotEmpty Set<Papeis> papel, LocalDate cadastro) {
+			@NotEmpty boolean status, LocalDate cadastro) {
 		this.id = id;
 		this.username = username;
 		this.nomeCompleto = nomeCompleto;
 		this.senha = senha;
 		this.status = status;
-		this.papel = papel;
+		
 		this.cadastro = cadastro;
 	}
 

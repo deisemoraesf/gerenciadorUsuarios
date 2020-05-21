@@ -38,7 +38,7 @@
 	   							<br>
 	   							<h6>Papéis:</h6>
 	   								<div class="form-check-inline" th:object="${papeis}" th:each="papel : ${papeis}">
-  										<input class="form-check-input" type="checkbox" value="" id="papeis" name="papeis">
+  										<input class="form-check-input" type="checkbox" th:value="${papel.papel}" id="papeis" name="papeis">
   										<label class="form-check-label" for="papel" th:text=${papel.papel}></label>
 									</div>
 	   						</div>
