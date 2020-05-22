@@ -69,18 +69,18 @@ public class UsuarioController {
 	public String salvaEdicao(@Valid Usuario u,@RequestParam("papeis") List<String> papel, RedirectAttributes attribute) {
 		Set <Papeis> precebido = new HashSet<>();
 		Set <Usuario> urecebido = new HashSet<>();
+		urecebido.add(u);
 		u.setCadastro(LocalDate.now());
 		for (String s : papel) {
 			Iterable <Papeis> pp = pr.findByPapel(s);
 			for(Papeis papeis : pp) {
-				precebido.add(papeis);
-				u.setPapel(precebido);
-				ur.save(u);
-				urecebido.add(u);
 				papeis.setUsuario(urecebido);
+				precebido.add(papeis);
 			}
-		}	
+		}
+		u.setPapel(precebido);
 		ur.save(u);
+		
 		attribute.addFlashAttribute("mensagemSucesso", "Editado com Sucesso");
 		return ("redirect:/usuarios");
 	}

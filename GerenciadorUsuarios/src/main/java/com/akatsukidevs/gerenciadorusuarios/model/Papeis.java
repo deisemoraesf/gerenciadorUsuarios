@@ -1,7 +1,6 @@
 package com.akatsukidevs.gerenciadorusuarios.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
@@ -27,14 +24,8 @@ public class Papeis implements Serializable {
 	@NotBlank
 	private String papel;
 	
-	
-	
-	@ManyToMany
-	@JoinTable(name = "tb_usuario_papeis", joinColumns = @JoinColumn(name="id_papel"),
-	   inverseJoinColumns = @JoinColumn(name="id_usuario"))
-	private Set<Usuario> usuario = new HashSet<>();
-	
-	
+	@ManyToMany(mappedBy="papel")
+	private Set<Usuario> usuario;
 
 	public Papeis() {
 		
