@@ -37,8 +37,8 @@
 					<tr th:each="usuario : ${usuarios}">
 						<td th:text="${usuario.id}" ><td>
 						<td th:text="${usuario.nomeCompleto}"><td>
-						<td th:if="${usuario.status} == true">Ativado</td>
-						<td th:unless="${usuario.status} == true">Desativado</td>
+						<td style=" color: blue; " th:if="${usuario.status} == true"><b>Ativado</b></td>
+						<td style=" color: red; " th:unless="${usuario.status} == true"><b>Desativado</b></td>
 						
 						<td>
 							<a class="btn btn-success btn-sm" role="button"

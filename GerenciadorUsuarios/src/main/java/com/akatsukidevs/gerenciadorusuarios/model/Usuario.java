@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,6 +44,7 @@ public class Usuario implements Serializable{
 	private boolean status;
 	
 	@ManyToMany
+	@NotBlank
 	@JoinTable(name = "tb_usuario_papeis", joinColumns = @JoinColumn(name="id_usuario"),
 	   inverseJoinColumns = @JoinColumn(name="id_papel"))
 	private Set<Papeis> papel;

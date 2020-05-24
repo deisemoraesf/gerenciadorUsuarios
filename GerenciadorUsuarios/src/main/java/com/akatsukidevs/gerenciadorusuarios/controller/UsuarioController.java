@@ -66,7 +66,11 @@ public class UsuarioController {
 	}
 	@Transactional
 	@PostMapping(value="/usuarios/editar/{id}")
-	public String salvaEdicao(@Valid Usuario u,@RequestParam("papeis") List<String> papel, RedirectAttributes attribute) {
+	public String salvaEdicao(@Valid Usuario u,@Valid @RequestParam("papeis") List<String> papel, RedirectAttributes attribute) {
+		if(papel.isEmpty() || papel == null) {
+			attribute.addFlashAttribute("mensagemErro", "Selecione papéis do usuário");	
+		}
+		
 		Set <Papeis> precebido = new HashSet<>();
 		Set <Usuario> urecebido = new HashSet<>();
 		urecebido.add(u);
